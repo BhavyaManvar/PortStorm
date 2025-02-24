@@ -1,6 +1,7 @@
 import socket
 import threading
-
+import tkinter as tk
+from tkinter import messagebox, scrolledtext
 
 class PortScanner:
     def __init__(self, target, ports, scan_type, timeout=1):
@@ -65,3 +66,28 @@ def start_scan():
     output_box.delete(1.0, tk.END)
     scanner = PortScanner(target_ip, ports, scan_type)
     threading.Thread(target=scanner.run_scan, args=(output_box,), daemon=True).start()
+
+# GUI Setup
+root = tk.Tk()
+root.title("Port Scanner")
+root.geometry("500x400")
+
+tk.Label(root, text="Target IP:").pack()
+ip_entry = tk.Entry(root)
+ip_entry.pack()
+
+tk.Label(root, text="Scan Type:").pack()
+scan_type_var = tk.StringVar(value="TCP")
+tk.Radiobutton(root, text="TCP", variable=scan_type_var, value="TCP").pack()
+tk.Radiobutton(root, text="UDP", variable=scan_type_var, value="UDP").pack()
+
+tk.Label(root, text="Port(s) (e.g., 80 or 20-100):").pack()
+port_entry = tk.Entry(root)
+port_entry.pack()
+
+tk.Button(root, text="Start Scan", command=start_scan).pack()
+
+output_box = scrolledtext.ScrolledText(root, height=10, width=60)
+output_box.pack()
+
+root.mainloop()

@@ -67,6 +67,38 @@ def start_scan():
     scanner = PortScanner(target_ip, ports, scan_type)
     threading.Thread(target=scanner.run_scan, args=(output_box,), daemon=True).start()
 
+def get_port_name(self, port):
+    try:
+        return socket.getservbyport(port)
+    except OSError:
+        return "Unknown Service"
+
+
+
+def scan_tcp(self, port):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(self.timeout)
+        result = s.connect_ex((self.target, port))
+        port_name = self.get_port_name(port)
+        if result == 0:
+            return f"[+] TCP Port {port} ({port_name}) is open"
+        return f"[-] TCP Port {port} ({port_name}) is closed"
+
+
+def scan_udp(self, port):
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+        s.settimeout(self.timeout)
+        try:
+            s.sendto(b"", (self.target, port))
+            s.recvfrom(1024)
+            port_name = self.get_port_name(port)
+            return f"[+] UDP Port {port} ({port_name}) is open or filtered"
+        except socket.timeout:
+            return f"[-] UDP Port {port} (Unknown Service) is closed or filtered"
+        except Exception as e:
+            return f"[!] Error scanning UDP port {port}: {e}"
+
+
 # GUI Setup
 root = tk.Tk()
 root.title("Port Scanner")

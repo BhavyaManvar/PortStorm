@@ -120,6 +120,28 @@ port_entry.pack()
 tk.Button(root, text="Start Scan", command=start_scan).pack()
 
 output_box = scrolledtext.ScrolledText(root, height=10, width=60)
+# Dropdown for selecting output type
+self.output_choice = tk.StringVar(value="open")  # Default: Show only open ports
+output_label = tk.Label(root, text="Show Results:")
+output_label.pack()
+
+output_options = ttk.Combobox(root, textvariable=self.output_choice, values=["open", "all"])
+output_options.pack()
+output_options.current(0)  # Set default to "open"
+
+
+
+def scan_and_display(self, scan_method, port, output_box):
+    result = scan_method(port)
+    user_choice = self.output_choice.get()  # Get selected option ("open" or "all")
+    
+    if user_choice == "all":  # Show all results
+        output_box.insert(tk.END, result + "\n")
+    elif user_choice == "open" and "[+]" in result:  # Show only open ports
+        output_box.insert(tk.END, result + "\n")
+
+    output_box.see(tk.END)
+
 output_box.pack()
 
 root.mainloop()

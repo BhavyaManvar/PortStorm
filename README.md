@@ -3,8 +3,8 @@
 ### ⚠️ Work in Progress
 
 There has updaing in features like
-                                  GUI for main screen
-                                  update for only open port or all ports
+                                  GUI for main screen, 
+                                  update for only open port or all ports, 
                                   and so on....
 
 

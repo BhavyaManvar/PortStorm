@@ -74,6 +74,67 @@ class PortScanner:
         for thread in threads:
             thread.join()
 
+    def shodan_lookup(self, target_ip):
+    """ Fetches extra details from Shodan API """
+    if not target_ip:
+        return "[!] No target IP provided for Shodan lookup."
+
+    try:
+        api = shodan.Shodan(SHODAN_API_KEY)
+        host = api.host(target_ip)
+
+        details = f"\n🔍 Shodan Results for {target_ip} 🔍\n"
+        details += f"🌍 Country: {host.get('country_name', 'N/A')}\n"
+        details += f"🏢 ISP: {host.get('isp', 'N/A')}\n"
+        details += f"🔗 Organization: {host.get('org', 'N/A')}\n"
+        details += f"🛑 Open Ports: {', '.join(map(str, host.get('ports', [])))}\n"
+
+        # Extract vulnerabilities if available
+        vulns = host.get('vulns', [])
+        if vulns:
+            details += "⚠️ Vulnerabilities Found:\n"
+            for vuln in vulns:
+                details += f"  - {vuln}\n"
+        else:
+            details += "✅ No known vulnerabilities found.\n"
+
+        return details
+
+    except shodan.APIError as e:
+        return f"[!] Shodan API Error: {e}"
+
+
+
+
+
+def display_summary(self, open_ports, total_ports):
+    """ Displays final summary of open ports, OS detection, and Shodan results """
+    open_count = len(open_ports)
+    summary_text = f"\n\n=== Scan Complete ===\n"
+    summary_text += f"🟢 {open_count}/{total_ports} ports are open.\n"
+
+    if open_ports:
+        summary_text += "🔹 Open Ports:\n"
+        for port in open_ports:
+            port_name = self.get_port_name(port)
+            summary_text += f"  - Port {port} ({port_name})\n"
+
+    # OS Detection
+    os_result = self.detect_os(self.target_ip.get().strip())
+    summary_text += f"\n{os_result}\n"
+
+    # Shodan Lookup
+    shodan_result = self.shodan_lookup(self.target_ip.get().strip())
+    summary_text += f"\n{shodan_result}\n"
+
+    self.output_box.insert(tk.END, summary_text, "summary")
+    self.output_box.tag_config("summary", foreground="blue", font=("Arial", 10, "bold"))
+    self.output_box.see(tk.END)
+
+    # Log the results
+    self.log_results(summary_text)
+
+
     def scan_and_display(self, scan_method, port):
         """ Scan and update GUI safely """
         result = scan_method(port)

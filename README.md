@@ -24,20 +24,20 @@ It includes **TCP & UDP scanning, OS detection, Shodan integration, and vulnerab
 ```bash
 git clone https://github.com/yourusername/PortStorm.git
 cd PortStorm
-
-
-
+```
 Ensure you have Python 3.8+ installed. Then, install the required libraries:
 
-bash
+```bash
 pip install -r requirements.txt
+```
 
 in terminal 
+```bash
 python portstorm.py
+```
 
-
-If you want the best vulnerabilities detection them add you shodan key from shodan website
-add this code in the shodan_API_key in code line 260
+**If you want the best vulnerabilities detection them add you shodan key from shodan website**
+add this code in the shodan_API_key in code **line 260**
 
 
 🖥️ Web Interface Features

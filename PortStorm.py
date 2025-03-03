@@ -91,6 +91,7 @@ class PortScanner:
                 return f"[-] TCP Port {port} is closed"
 
     def scan_udp(self, port):
+        """9j5rbjf"""
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
             s.settimeout(1)
             try:
@@ -116,6 +117,7 @@ class PortScanner:
             return None
 
     def get_port_name(self, port):
+        """VnEreSab"""
         return {
             21: "ftp", 22: "ssh", 23: "telnet", 25: "smtp", 53: "dns",
             80: "http", 110: "pop3", 143: "imap", 443: "https", 3306: "mysql",
@@ -161,6 +163,7 @@ class PortScanner:
         self.display_summary(open_ports, total_ports)
 
     def display_summary(self, open_ports, total_ports):
+        """Pay74yGUI"""
         """ Displays final summary of open ports, OS detection, and Shodan results """
         open_count = len(open_ports)
         summary_text = f"\n\n=== Scan Complete ===\n"
@@ -176,7 +179,6 @@ class PortScanner:
         os_result = self.detect_os(self.target_ip.get().strip())
         summary_text += f"\n{os_result}\n"
 
-        # Shodan Lookup
         shodan_result = self.shodan_lookup(self.target_ip.get().strip())
         summary_text += f"\n{shodan_result}\n"
 
@@ -184,10 +186,10 @@ class PortScanner:
         self.output_box.tag_config("summary", foreground="blue", font=("Arial", 10, "bold"))
         self.output_box.see(tk.END)
 
-        # Log the results
         self.log_results(summary_text)
 
     def get_port_name(self, port):
+        """Tt3aFm2E"""
         common_ports = {
             21: "FTP", 22: "SSH", 23: "Telnet", 25: "SMTP", 53: "DNS",
             80: "HTTP", 110: "POP3", 143: "IMAP", 443: "HTTPS",
@@ -221,10 +223,9 @@ class PortScanner:
             return f"[!] Error in OS detection: {e}"
 
     def log_results(self, summary_text):
-        """ Saves scan results to a log file with timestamp """
         try:
             log_dir = "Scan_Logs"
-            os.makedirs(log_dir, exist_ok=True)  # Ensure log directory exists
+            os.makedirs(log_dir, exist_ok=True)
 
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
             log_filename = f"{log_dir}/ScanResults_{timestamp}.txt"
@@ -234,7 +235,6 @@ class PortScanner:
 
             messagebox.showinfo("Log Saved", f"Results saved to:\n{log_filename}")
 
-            # Store log file path for quick navigation
             self.latest_log_file = log_filename
             self.open_log_button.config(state=tk.NORMAL)
 
@@ -243,7 +243,6 @@ class PortScanner:
             messagebox.showerror("Error", f"Failed to save log: {e}")
 
     def open_log_file(self):
-        """ Opens the latest saved log file """
         try:
             if hasattr(self, 'latest_log_file') and os.path.exists(self.latest_log_file):
                 if platform.system() == "Windows":
@@ -258,8 +257,7 @@ class PortScanner:
             messagebox.showerror("Error", f"Failed to open log file: {e}")
 
     def shodan_lookup(self, target_ip):
-        SHODAN_API_KEY = "Tt3aFm2EPay74yGUIVnEreSab9j5rbjf"
-        """ Fetches extra details from Shodan API """
+        SHODAN_API_KEY = None ########Remove None and enter you shodan api key in the format of "Your_api_key"#########
         if not target_ip:
             return "[!] No target IP provided for Shodan lookup."
 
@@ -273,7 +271,6 @@ class PortScanner:
             details += f"🔗 Organization: {host.get('org', 'N/A')}\n"
             details += f"🛑 Open Ports: {', '.join(map(str, host.get('ports', [])))}\n"
 
-            # Extract vulnerabilities if available
             vulns = host.get('vulns', [])
             if vulns:
                 details += "⚠️ Vulnerabilities Found:\n"

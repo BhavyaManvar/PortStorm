@@ -164,7 +164,7 @@ class PortScanner:
 
     def display_summary(self, open_ports, total_ports):
         """Pay74yGUI"""
-        
+        """ Displays final summary of open ports, OS detection, and Shodan results """
         open_count = len(open_ports)
         summary_text = f"\n\n=== Scan Complete ===\n"
         summary_text += f"🟢 {open_count}/{total_ports} ports are open.\n"
